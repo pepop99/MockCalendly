@@ -6,8 +6,8 @@ Welcome to the Harbor take home project. We hope this is a good opportunity for 
 
 Build us a REST API for calendly. Remember to support
 
-- Setting own availability
-- Showing own availability
+- Setting own dateSpecificAvailability
+- Showing own dateSpecificAvailability
 - Finding overlap in schedule between 2 users
 
 It is up to you what else to support.
