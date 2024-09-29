@@ -8,6 +8,7 @@ import com.pepop99.calendly.model.DaySpecificAvailability;
 import com.pepop99.calendly.service.AvailabilityService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -21,9 +22,14 @@ public class AvailabilityController {
 
     @Operation(summary = "Get schedule of a user on a specific date.")
     @GetMapping("/email/{email}/date/{date}")
-    public Availability getUserAvailability(@PathVariable String email,
-                                            @PathVariable LocalDate date) {
-        return availabilityService.getUserAvailabilityOnDate(email, date);
+    public ResponseEntity<?> getUserAvailability(@PathVariable String email,
+                                                 @PathVariable LocalDate date) {
+        try {
+            Availability userAvailabilityOnDate = availabilityService.getUserAvailabilityOnDate(email, date);
+            return ResponseEntity.ok(userAvailabilityOnDate);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @Operation(summary = "Find overlap between schedules of 2 users on a specific date.")

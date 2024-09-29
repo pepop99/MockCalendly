@@ -6,6 +6,8 @@ import com.pepop99.calendly.repository.UserRepository;
 import com.pepop99.calendly.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,12 +24,12 @@ public class UserController {
 
     @Operation(summary = "Create a new user.")
     @PostMapping("/save")
-    public User save(@RequestBody UserDTO dto) {
+    public ResponseEntity<?> save(@RequestBody UserDTO dto) {
         if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("Email already exists");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already exists");
         }
         User user = new User();
         user.setEmail(dto.getEmail());
-        return userService.save(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 }
